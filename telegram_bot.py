@@ -13,6 +13,7 @@ import logging
 
 from telegram import __version__ as TG_VER
 
+from managers.answer_manager import AnswerManager
 from managers.tag_manager import TagManager
 
 try:
@@ -49,7 +50,10 @@ async def help(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "Was Albert at the pier because he was lost?",
         "Were there more than 3 persons on the boat?",
         "Were there more than 1 persons on the boat?",
+    ],
+    [
         "Were there more than 3 persons at the restaurant?",
+        "Was the seagull edible?"
     ]]
 
     await update.message.reply_text(
@@ -62,9 +66,16 @@ async def help(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def question(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    reply = ['No', 'Yes', 'Doesn\'t matter']
+
     user = update.message.from_user
-    print(user)
-    await update.message.reply_text(TagManager.get_instance().ask(update.message.text))
+    print(f'user: {user.username}, full name: {user.full_name}')
+
+    question = update.message.text
+    print(question)
+    tag = TagManager.get_instance().ask(question)
+    answer = AnswerManager.get_instance().answer(question, tag)
+    await update.message.reply_text(reply[answer])
 
 
 def main() -> None:
