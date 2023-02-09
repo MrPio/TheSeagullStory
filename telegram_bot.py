@@ -74,8 +74,17 @@ async def question(update: Update, context: ContextTypes.DEFAULT_TYPE):
     question = update.message.text
     print(question)
     tag = TagManager.get_instance().ask(question)
-    answer = AnswerManager.get_instance().answer(question, tag)
-    await update.message.reply_text(f'tag= {tag}, reply={reply[answer]}')
+    try:
+        answer = reply[AnswerManager.get_instance().answer(question, tag)]
+    except Exception as e:
+        if 'not a yes/no question' in str(e):
+            answer='⭕ I can only answer yes/no questions! ⭕'
+        elif 'when|before|after required' in str(e):
+            answer = '🕓 When? 🕓'
+        else:
+            answer='❌ Error, please retry! ❌'
+
+    await update.message.reply_text(f'tag= {tag}, reply={answer}')
 
 
 def main() -> None:

@@ -31,13 +31,13 @@ class SynonymsManager:
 
     def __init__(self, key):
         if SynonymsManager.__key is not key:
-            raise 'Singleton not respected'
+            raise Exception('Singleton not respected')
         self.cache = {}
 
     def synonyms(self, term: str):
         if term.lower() in self.cache.keys():
             return self.cache[term.lower()]
-        print('*** cerco sinonimo ***')
+        print(f'*** cerco sinonimo [{term}] ***')
         response = requests.get('https://www.thesaurus.com/browse/{}'.format(term))
         soup = BeautifulSoup(response.text, 'lxml')
         soup.find('section', {'class': 'css-17ofzyv e1ccqdb60'})
