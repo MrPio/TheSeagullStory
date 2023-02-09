@@ -5,10 +5,15 @@ from cohere.classify import Example
 class TagManager:
     __key = object()
     __instance = None
-    training = """blind
-                Were the two friends a couple?
+    training = """health
                 Was Albert blind?
+                Was Albert crazy?
+                Was Albert sick?
                 Was any of the two friends blind?
+                Was any of the two friends sick?
+                The health condition of the two friends.
+                The health condition of Albert.
+                The health condition of Ronald.
                 Albert was blind, but not Ronald.
 
                 pier
@@ -29,10 +34,12 @@ class TagManager:
                 Did the seagull taste good?
                 Did Albert eat all of the dish?
                 Was the waiter surprised by the ordination?
+                The waiter brought the seagull to Albert
+                The seagull wasn't poisoned
                 Did Ronald ordered a dish too?
 
                 ship
-                On the ship there were 3 persons
+                On the ship there were more than 3 persons
                 The persons on the ships weren't Albert's friends
                 Was the boat a pirate boat?"""
 
@@ -85,6 +92,6 @@ class TagManager:
             examples=self.examples
         )
 
-        print(question)
-        print(response.classifications[0])
+        # print(question)
+        # print(response.classifications[0])
         return response.classifications[0].prediction

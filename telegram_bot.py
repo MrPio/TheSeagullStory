@@ -75,7 +75,7 @@ async def question(update: Update, context: ContextTypes.DEFAULT_TYPE):
     print(question)
     tag = TagManager.get_instance().ask(question)
     answer = AnswerManager.get_instance().answer(question, tag)
-    await update.message.reply_text(reply[answer])
+    await update.message.reply_text(f'tag= {tag}, reply={reply[answer]}')
 
 
 def main() -> None:
